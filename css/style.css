@@ -1,0 +1,17 @@
+html {
+  min-width: 940px;
+  margin: 50px;
+}
+
+body {
+  font: 16px/1.5em "Helvetica Neue", Helvetica, sans-serif;
+  margin: 1em 0 1em 0;
+}
+
+img {
+  float: left;
+  width: 128px;
+  margin-right: 22px;
+}
+
+

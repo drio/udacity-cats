@@ -1,0 +1,29 @@
+<!doctype html>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta charset="utf-8">  
+<title>Cats</title>  
+<meta name="description" content="Udacity assignment">  
+<link rel="stylesheet" href="/css/style.css">
+
+<div id="buttons">
+</div>
+
+<div id="display">
+</div>
+
+
+<script type="text/template" data-template="list">
+  <% _.each(names, function(name) { %> 
+    <button><%= name %></button> 
+  <% }); %>
+</script>
+
+<script type="text/template" data-template="display">
+  <p><%=counter%>
+  <img src="imgs/<%= name %>.jpg" alt="<%= name %>">
+</script>
+
+
+<script src="http://documentcloud.github.io/underscore/underscore-min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="js/app.js"></script>
