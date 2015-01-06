@@ -1,7 +1,20 @@
 <!-- vim: set ts=4 sw=4 noet foldmethod=indent: -->
 (function() {
-	var data  = {},
-		files = "blue.jpg cute.jpg eyes.jpg gordi.jpg green.jpg sun.jpg";
+
+	var model = { 
+		files: "blue.jpg cute.jpg eyes.jpg gordi.jpg green.jpg sun.jpg",
+		cats: {},
+		load: function() {
+			var cats = this.cats;
+			_.each(this.files.split(" "), function(fn, idx, list) {
+				cats[fn.slice(0, -4)] = 0;
+			});
+		},
+		forTemplateCats: function() { return { names: _.keys(this.cats) } },
+		forTemplateCat: function(cat_name) { 
+			return { name: cat_name, counter: this.cats[cat_name] };
+			}
+	};
 
 
 	var viewList = {
@@ -36,32 +49,29 @@
 		addListener: function(cat) {
 			d3.select('#display img').on("click", function() { 
 				octupus.updateCat(cat.name); 
-			});	
+			});
 		}
 	}
 
 
 	var octupus = {
 		init: function() {
-			_.each(files.split(" "), function(fn, idx, list) {
-				var name = fn.slice(0, -4);
-        		data[name] = 0;
-      		});
+			model.load();
 			viewList.init();
 			viewDisplay.init();
     	},
 
 		getNames: function() { 
-			return { 'names': _.keys(data) };
+			return model.forTemplateCats();
 		},
 
 		showCat: function(name) { 
-			viewDisplay.render({ 'name': name, 'counter': data[name] });
+			viewDisplay.render(model.forTemplateCat(name));
 		},
 
 		updateCat: function(name) {
-			data[name] += 1;
-			viewDisplay.render({ 'name': name, 'counter': data[name] });
+			model.cats[name] += 1;
+			viewDisplay.render(model.forTemplateCat(name));
 		}
   	}
 
