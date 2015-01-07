@@ -6,12 +6,15 @@
 
 		cats: {},
 
+		current: null,
+
 		load: function() {
 			var cats = this.cats;
 			_.each(this.files.split(" "), function(fn, idx, list) {
 				var name = fn.slice(0, -4);
 				cats[name] = { name:name, counter:0, url:"imgs/" + fn };
 			});
+			this.current = this.cats["blue"];
 		},
 
 		forTemplateCats: function() { return { names: _.keys(this.cats) } },
@@ -44,16 +47,18 @@
 	var viewDisplay = {
 		init: function() {
 		  this.tcompiled = _.template(d3.select('script[data-template="display"]').html());
+		  this.render();
 		},
 
-		render: function(cat) { 
+		render: function() { 
+			var cat = octupus.getCurrent();
 		    d3.selectAll('#display').html(this.tcompiled(cat));
-			this.addListener(cat);
+			this.addListener();
 		},
 
-		addListener: function(cat) {
+		addListener: function() {
 			d3.select('#display img').on("click", function() { 
-				octupus.updateCat(cat.name); 
+				octupus.updateCat(); 
 			});
 		}
 	}
@@ -66,17 +71,20 @@
 			viewDisplay.init();
     	},
 
+		getCurrent: function() { return model.current; },
+
 		getNames: function() { 
 			return model.forTemplateCats();
 		},
 
-		showCat: function(name) { 
-			viewDisplay.render(model.forTemplateCat(name));
+		showCat: function(name) {
+			model.current = model.cats[name];
+			viewDisplay.render();
 		},
 
-		updateCat: function(name) {
-			model.cats[name].counter += 1;
-			viewDisplay.render(model.forTemplateCat(name));
+		updateCat: function() {
+			model.current.counter += 1;
+			viewDisplay.render();
 		}
   	}
 
