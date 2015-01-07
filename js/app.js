@@ -25,6 +25,35 @@
 	};
 
 
+	var viewAdmin = {
+		init: function() {
+			this.addListeners();
+		},
+
+		addListeners: function() {
+			var form = d3.selectAll("#admin_area form"),
+                inputs = d3.selectAll("#form input[type='text']");
+
+			d3.select("#admin_area #admin").on("click", function() {
+				var new_v = form.style('visibility') === 'hidden' ? 'visible' : 'hidden';
+				form.style('visibility', new_v); 
+			});
+
+			d3.select("#form #cancel").on("click", function() {
+				_.each(inputs[0], function(e, i, l) { e.value = ''; });
+				form.style('visibility', 'hidden'); 
+			});
+
+			d3.select("#form #submit").on("click", function(e) {
+				var args = _.object(["name", "url", "counter"], _.pluck(inputs[0], 'value'));
+				args.counter = +args.counter;
+				octopus.changeCat(args);
+			});
+
+		}
+	};
+
+
 	var viewList = {
 		init: function() {
 		  this.tcompiled = _.template(d3.select('script[data-template="list"]').html());
@@ -33,12 +62,12 @@
 		},
 
 		render: function() { 
-			d3.selectAll('#buttons').html((this.tcompiled(octupus.getNames())));
+			d3.selectAll('#buttons').html((this.tcompiled(octopus.getNames())));
 		},
 
 		addListeners: function() {
 			d3.selectAll("button.b_list").on("click", function() { 
-				octupus.showCat(this.innerHTML); 
+				octopus.showCat(this.innerHTML); 
 			});	
 		}
 	};
@@ -51,24 +80,25 @@
 		},
 
 		render: function() { 
-			var cat = octupus.getCurrent();
+			var cat = octopus.getCurrent();
 		    d3.selectAll('#display').html(this.tcompiled(cat));
 			this.addListener();
 		},
 
 		addListener: function() {
 			d3.select('#display img').on("click", function() { 
-				octupus.updateCat(); 
+				octopus.updateCat(); 
 			});
 		}
 	}
 
 
-	var octupus = {
+	var octopus = {
 		init: function() {
 			model.load();
 			viewList.init();
 			viewDisplay.init();
+			viewAdmin.init();
     	},
 
 		getCurrent: function() { return model.current; },
@@ -85,10 +115,14 @@
 		updateCat: function() {
 			model.current.counter += 1;
 			viewDisplay.render();
+		},
+
+		changeCat: function(cat) {
+			model.current = cat;
 		}
   	}
 
-  	octupus.init();
+  	octopus.init();
 
 })();
 
