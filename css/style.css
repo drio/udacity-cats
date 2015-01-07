@@ -14,4 +14,18 @@ img {
   margin-right: 22px;
 }
 
+input[type=text] {
+  display: block; 
+}
 
+#display {
+  padding-top: 15px;
+}
+
+#admin_area {
+  padding-top: 15px;
+}
+
+#form {
+  visibility: hidden;
+}
