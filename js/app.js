@@ -37,7 +37,7 @@
 		},
 
 		addListeners: function() {
-			d3.selectAll("button").on("click", function() { 
+			d3.selectAll("button.b_list").on("click", function() { 
 				octupus.showCat(this.innerHTML); 
 			});	
 		}

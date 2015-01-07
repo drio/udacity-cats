@@ -10,8 +10,6 @@ body {
 
 img {
   float: left;
-  width: 128px;
-  margin-right: 22px;
 }
 
 input[type=text] {
@@ -19,10 +17,13 @@ input[type=text] {
 }
 
 #display {
+  height: 150px;
+  display: block;
   padding-top: 15px;
 }
 
 #admin_area {
+  display: block;
   padding-top: 15px;
 }
 
