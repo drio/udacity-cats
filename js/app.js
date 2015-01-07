@@ -31,12 +31,13 @@
 		},
 
 		addListeners: function() {
-			var form = d3.selectAll("#admin_area form"),
+			var form = d3.selectAll("#admin_area form");
                 inputs = d3.selectAll("#form input[type='text']");
 
 			d3.select("#admin_area #admin").on("click", function() {
 				var new_v = form.style('visibility') === 'hidden' ? 'visible' : 'hidden';
 				form.style('visibility', new_v); 
+				octopus.adminOn();
 			});
 
 			d3.select("#form #cancel").on("click", function() {
@@ -50,6 +51,12 @@
 				octopus.changeCat(args);
 			});
 
+		},
+
+		update: function(cat) {
+			d3.selectAll("#form input[name='name']").property("value", cat.name);
+			d3.selectAll("#form input[name='url']").property("value", cat.url);
+			d3.selectAll("#form input[name='counter']").property("value", cat.counter);
 		}
 	};
 
@@ -110,15 +117,25 @@
 		showCat: function(name) {
 			model.current = model.cats[name];
 			viewDisplay.render();
+			viewAdmin.update(model.current);
 		},
 
 		updateCat: function() {
 			model.current.counter += 1;
 			viewDisplay.render();
+			viewAdmin.update(model.current);
 		},
 
 		changeCat: function(cat) {
+			delete model.cats[model.current.name];
+			model.cats[cat.name] = cat;
 			model.current = cat;
+			viewList.init();
+			viewDisplay.init();
+		},
+
+		adminOn: function() {
+			viewAdmin.update(model.current);
 		}
   	}
 
