@@ -3,17 +3,22 @@
 
 	var model = { 
 		files: "blue.jpg cute.jpg eyes.jpg gordi.jpg green.jpg sun.jpg",
+
 		cats: {},
+
 		load: function() {
 			var cats = this.cats;
 			_.each(this.files.split(" "), function(fn, idx, list) {
-				cats[fn.slice(0, -4)] = 0;
+				var name = fn.slice(0, -4);
+				cats[name] = { name:name, counter:0, url:"imgs/" + fn };
 			});
 		},
+
 		forTemplateCats: function() { return { names: _.keys(this.cats) } },
+
 		forTemplateCat: function(cat_name) { 
-			return { name: cat_name, counter: this.cats[cat_name] };
-			}
+			return this.cats[cat_name]; 
+		}
 	};
 
 
@@ -70,7 +75,7 @@
 		},
 
 		updateCat: function(name) {
-			model.cats[name] += 1;
+			model.cats[name].counter += 1;
 			viewDisplay.render(model.forTemplateCat(name));
 		}
   	}
